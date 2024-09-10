@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .tabs button {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      background-color: #f1f1f1;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    .tabs button.active {
+      background-color: white;
+      border-bottom: 2px solid #333;
+    }
+    .tabs button:hover {
+      background-color: #ddd;
+    }
+    .tab-content > div {
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: none; /* Initially hide all tab content */
+    }
+    .tab-content > div.active {
+      display: block; /* Display the active tab's content */
+    }
+  </style>
+</head>
+<body>
+
+<tab-panel>
+  <div data-tabname="Tab 1">This is the content of Tab One. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+  <div data-tabname="Tab 2">Here is some random content for Tab Two. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</div>
+  <div data-tabname="Tab 3">Content of Tab Three goes here. Sed nisi. Nulla quis sem at nibh elementum imperdiet.</div>
+</tab-panel>
+
+<script>
+function asTabs(node) {
+  const tabButtons = document.createElement("div");
+  tabButtons.className = "tabs";
+  const contentDivs = node.children;
+
+  for (let i = 0; i < contentDivs.length; i++) {
+    const button = document.createElement("button");
+    const tabName = contentDivs[i].getAttribute("data-tabname");
+    button.textContent = tabName;
+
+    button.addEventListener("click", () => {
+      // Deactivate all tabs and hide all content
+      for (let j = 0; j < contentDivs.length; j++) {
+        tabButtons.children[j].classList.remove("active");
+        contentDivs[j].classList.remove("active");
+      }
+      // Activate the clicked tab and show its content
+      button.classList.add("active");
+      contentDivs[i].classList.add("active");
+    });
+
+    tabButtons.appendChild(button);
+  }
+
+  node.insertBefore(tabButtons, node.firstChild);
+
+  // Activate the first tab by default
+  tabButtons.children[0].classList.add("active");
+  contentDivs[0].classList.add("active");
+}
+
+asTabs(document.querySelector("tab-panel"));
+</script>
+
+</body>
+</html>
